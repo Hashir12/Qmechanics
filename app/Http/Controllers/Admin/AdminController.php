@@ -70,14 +70,13 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            User::updateUser($request->all(), $id);
-            flash()->success('success', 'User updated successfully.');
+        $response = User::updateUser($request->all(), $id);
+        if ($response['status'] === 'success') {
+            flash()->success('success',$response['message']);
             return redirect()->route('admin.index');
-
-        } catch (Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
+        flash()->error('error',$response['message']);
+        return redirect()->back();
     }
 
     /**

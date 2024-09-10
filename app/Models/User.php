@@ -58,7 +58,7 @@ class User extends Authenticatable
         return new self;
     }
 
-    public static function createUser(array $data)
+    public function createUser(array $data)
     {
         try {
             $role = UserRole::where('id', $data['role'])->first();
@@ -81,17 +81,25 @@ class User extends Authenticatable
             return ['status' => 'success', 'message' => 'User created successfully.', 'user' => $newUser];
         } catch (Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
-
         }
     }
 
     public static function updateUser(array $data, int $id) {
-        $user = self::findOrFail($id);
-        $user->name = $data['name'];
-        $user->role_id = $data['role'];
-        $user->save();
-    }
+        try {
+            $user = self::find($id);
+            if (!$user) {
+                throw new Exception("User not found.");
+            }
 
+            $user->name = $data['name'];
+            $user->role_id = $data['role'];
+            $user->save();
+            return ['status' => 'success', 'message' => 'User updated successfully.'];
+        } catch(Exception $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
+        }
+
+    }
 
     public function role()
     {

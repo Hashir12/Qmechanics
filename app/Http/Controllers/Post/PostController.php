@@ -32,7 +32,14 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        dd($request->all());
+        $response = Post::setAuthId(Auth::id())->createPost($request->validated());
+
+        if ($response['status'] === 'success') {
+            flash()->success('success',$response['message']);
+            return redirect()->route('posts.index');
+        }
+        flash()->error('error',$response['message']);
+        return redirect()->back();
     }
 
     /**
@@ -40,7 +47,12 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::where('user_id',Auth::id())->where('id',$id)->first();
+        if (!$post){
+            flash()->error('error',"Post not found");
+            return redirect()->route('posts.index');
+        }
+        return view('post.post_details', compact('post'));
     }
 
     /**
@@ -53,15 +65,21 @@ class PostController extends Controller
             flash()->error('Error','You are not authorized to access this page');
             return redirect()->back();
         }
-        return view('admin.add',compact('post'));
+        return view('post.add',compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, string $id)
     {
-        //
+        $response = Post::updatePost($request->all(), $id);
+        if ($response['status'] === 'success') {
+            flash()->success('success',$response['message']);
+            return redirect()->route('posts.index');
+        }
+        flash()->error('error',$response['message']);
+        return redirect()->back();
     }
 
     /**
@@ -69,6 +87,9 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        flash()->success('success', 'Post disabled successfully.');
+        return redirect()->route('posts.index');
     }
 }

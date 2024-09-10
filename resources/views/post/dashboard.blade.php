@@ -42,29 +42,24 @@
                                     {{ $post->title }}
                                 </td>
                                 <td class="py-2 px-4 border-b border-gray-300">
-                                    {{ $post->content }}
+                                    {{ substr($post->content,0, 50) }}
                                 </td>
                                 <td class="py-2 px-4 border-b border-gray-300">
                                     {{ date($post->created_at) }}
                                 </td>
                                 <td class="py-2 px-4 border-b border-gray-300">
-                                    @if ($user->deleted_at)
-                                        <a href="{{route('admin.restore',$user->id)}}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Restore</a>
-                                        <a href="{{route('admin.delete', $user->id)}}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this user permanently ?');">Delete Permanent</a>
-                                    @else
-                                        <a href="{{ route('admin.edit', $user->id) }}"
-                                           class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Edit</a>
-                                        <form action="{{ route('admin.destroy', $user->id) }}" method="POST"
-                                              style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                                    onclick="return confirm('Are you sure you want to disbale this user?');">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    @endif
-
+                                    <a href="{{route('posts.show',$post->id)}}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">View</a>
+                                    <a href="{{ route('posts.edit', $post->id) }}"
+                                       class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                          style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                                onclick="return confirm('Are you sure you want to disbale this user?');">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

@@ -12,7 +12,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
                     <form action="{{ isset($post) ? route('posts.update', $post->id) : route('posts.store') }}" method="POST">
                         @csrf
                         @isset($post)
@@ -37,7 +36,8 @@
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="content">
                                 Content
                             </label>
-                            <textarea name="content" id="content" cols="30" rows="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                            <textarea name="content" id="content" cols="30" rows="10" class="shadow appearance-none border
+                            rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{isset($post) ? $post->content : ''}}</textarea>
                             @error('content')
                             <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                             @enderror
