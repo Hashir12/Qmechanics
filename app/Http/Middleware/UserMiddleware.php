@@ -16,9 +16,10 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!(Auth::check() && Auth::user()->role->role_type === 'user')) {
-            abort(404);
+        if (Auth::check() && Auth::user()->role->role_type === 'user') {
+            return $next($request);
         }
-        return $next($request);
+        flash()->error('error', 'Access denied. Users only.');
+        return redirect()->back();
     }
 }

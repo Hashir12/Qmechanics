@@ -94,7 +94,6 @@ class AdminController extends Controller
     public function restore($id)
     {
         $user = User::withTrashed()->findOrFail($id);
-
         if ($user->trashed()) {
             $user->restore();
         }

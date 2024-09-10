@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('dashboard');
+        $data['posts'] = Post::where('user_id',Auth::id())->orderBy('created_at','desc')->paginate(5);
+        return view('post.dashboard',compact('data'));
     }
 
     /**
@@ -20,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('post.add');
     }
 
     /**

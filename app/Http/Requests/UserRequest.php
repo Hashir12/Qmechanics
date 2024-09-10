@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
     {
          // Validation rules for the user form
          return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email',
             'role' => 'required|in:1,2',
             'password' => 'required|string|min:8',
