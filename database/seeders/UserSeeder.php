@@ -17,7 +17,15 @@ class UserSeeder extends Seeder
         User::create([
             'role_id' => 1,
             'name' => 'Super Admin',
-            'email' => 'superadmin@qmechanics.com',
+            'email' => 'h@g.com',
+            'email_verified_at' => Carbon::now(),
+            'password' => Hash::make('alialiali')
+        ]);
+        
+        User::create([
+            'role_id' => 2,
+            'name' => 'Hashir',
+            'email' => 'hashir@g.com',
             'email_verified_at' => Carbon::now(),
             'password' => Hash::make('alialiali')
         ]);

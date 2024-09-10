@@ -15,10 +15,6 @@ class UserRolerSeeder extends Seeder
     public function run(): void
     {
         UserRole::create([
-            'role_type' => 'super_admin'
-        ]);
-
-        UserRole::create([
             'role_type' => 'admin'
         ]);
 

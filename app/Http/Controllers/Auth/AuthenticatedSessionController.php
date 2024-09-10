@@ -27,13 +27,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        if (in_array(Auth::user()->role->role_type, ['super_admin', 'admin'])) {
-            $route = route('admin.index');
+        if (Auth::user()->role->role_type =='admin') {
+            $route = 'admin.index';
         } else {
             //when role is user
-            $route = route('user.index');
+            $route = 'user.index';
         }
-        return redirect()->intended(route($route, absolute: false));
+        return redirect()->intended(route($route));
     }
 
     /**

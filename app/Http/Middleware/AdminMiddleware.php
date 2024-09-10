@@ -16,9 +16,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!(Auth::check() && in_array(Auth::user()->role->role_type, ['super_admin', 'admin']))) {
-            abort(404);
+        if (Auth::check() && Auth::user()->role->role_type == 'admin') {
+            return $next($request);
         }
-        return $next($request);
+
+        return redirect('/')->with('error', 'Access denied. Admins only.');        
     }
 }
