@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,9 +30,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -47,7 +48,12 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::where('user_id',Auth::id())->where('id',$id)->first();
+        if (!$post) {
+            flash()->error('Error','You are not authorized to access this page');
+            return redirect()->back();
+        }
+        return view('admin.add',compact('post'));
     }
 
     /**

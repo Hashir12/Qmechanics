@@ -13,8 +13,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form action="{{ isset($user) ? route('posts.update', $post->id) : route('posts.store') }}"
-                          method="POST">
+                    <form action="{{ isset($post) ? route('posts.update', $post->id) : route('posts.store') }}" method="POST">
                         @csrf
                         @isset($post)
                             @method('PUT')
@@ -45,7 +44,7 @@
                         </div>
                         <button type="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            {{ isset($user) ? 'Update User' : 'Create User' }}
+                            {{ isset($post) ? 'Update Post' : 'Create Post' }}
                         </button>
                     </form>
                 </div>
