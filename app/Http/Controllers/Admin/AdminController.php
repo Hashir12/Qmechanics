@@ -15,7 +15,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $data['users'] = User::where('id', '!=', Auth::user()->id)->withTrashed()->paginate(10);
+        $data['users'] = User::where('parent_id',Auth::id())->with('role')->withTrashed()->orderBy('id','desc')->paginate(5);
         return view('admin.dashboard',compact('data'));
     }
 
@@ -32,14 +32,15 @@ class AdminController extends Controller
      */
     public function store(UserRequest $request)
     {
-        try {
-            User::createUser($request->validated());
-            return redirect()->route('admin.index')->with('success', 'User created successfully.');
 
-        } catch (\Throwable $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        $response = User::setAuthId(Auth::id())->createUser($request->validated());
+
+        if ($response['status'] === 'success') {
+            flash()->success('success',$response['message']);
+            return redirect()->route('admin.index');
         }
-
+        flash()->error('error',$response['message']);
+        return redirect()->back();
     }
 
     /**
@@ -55,7 +56,12 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('parent_id',Auth::id())->where('id',$id)->first();
+
+        if (!$user) {
+            flash()->error('Error','You are not authorized to access this page');
+            return redirect()->back();
+        }
         return view('admin.add',compact('user'));
     }
 
@@ -66,7 +72,8 @@ class AdminController extends Controller
     {
         try {
             User::updateUser($request->all(), $id);
-            return redirect()->route('admin.index')->with('success', 'User updated successfully.');
+            flash()->success('success', 'User updated successfully.');
+            return redirect()->route('admin.index');
 
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
@@ -80,7 +87,8 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('admin.index')->with('success', 'User disbaled successfully.');
+        flash()->success('success', 'User disabled successfully.');
+        return redirect()->route('admin.index');
     }
 
     public function restore($id)
@@ -90,6 +98,7 @@ class AdminController extends Controller
         if ($user->trashed()) {
             $user->restore();
         }
+        flash()->success('success', 'User restored successfully.');
         return redirect()->route('admin.index')->with('success', 'User restored successfully.');
     }
 
@@ -99,6 +108,7 @@ class AdminController extends Controller
         if ($user->trashed()) {
             $user->forceDelete();
         }
+        flash()->success('success', 'User deleted successfully.');
         return redirect()->route('admin.index')->with('success', 'User deleted successfully.');
     }
 }

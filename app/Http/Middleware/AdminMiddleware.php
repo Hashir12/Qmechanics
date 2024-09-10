@@ -19,7 +19,7 @@ class AdminMiddleware
         if (Auth::check() && Auth::user()->role->role_type == 'admin') {
             return $next($request);
         }
-
-        return redirect()->back()->with('error', 'Access denied. Admins only.');
+        flash()->error('error', 'Access denied. Admins only.');
+        return redirect()->back();
     }
 }
