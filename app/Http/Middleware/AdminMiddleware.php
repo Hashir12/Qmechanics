@@ -20,6 +20,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Access denied. Admins only.');        
+        return redirect()->back()->with('error', 'Access denied. Admins only.');
     }
 }

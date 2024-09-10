@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function() {
 
     Route::middleware('admin')->group(function (){
         Route::resource('admin', AdminController::class);
+        Route::get('admin/{id}/restore',[AdminController::class, 'restore'])->name('admin.restore');
+        Route::get('admin/{id}/delete',[AdminController::class, 'permanentDelete'])->name('admin.delete');
+
     });
 });
 

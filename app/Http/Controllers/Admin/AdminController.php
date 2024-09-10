@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserRequest;
 
 class AdminController extends Controller
 {
@@ -12,7 +15,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $data['users'] = User::where('id', '!=', Auth::user()->id)->withTrashed()->paginate(10);
+        return view('admin.dashboard',compact('data'));
     }
 
     /**
@@ -20,15 +24,22 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.add');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        try {
+            User::createUser($request->validated());
+            return redirect()->route('admin.index')->with('success', 'User created successfully.');
+
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
+
     }
 
     /**
@@ -44,15 +55,22 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.add',compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            User::updateUser($request->all(), $id);
+            return redirect()->route('admin.index')->with('success', 'User updated successfully.');
+
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
     }
 
     /**
@@ -60,6 +78,27 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('admin.index')->with('success', 'User disbaled successfully.');
+    }
+
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        if ($user->trashed()) {
+            $user->restore();
+        }
+        return redirect()->route('admin.index')->with('success', 'User restored successfully.');
+    }
+
+    public function permanentDelete($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        if ($user->trashed()) {
+            $user->forceDelete();
+        }
+        return redirect()->route('admin.index')->with('success', 'User deleted successfully.');
     }
 }
