@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "241fe1df737ab497a1566863d3346a41",
+    "content-hash": "17b49453b6b3100fa9b46f58bb0250c8",
     "packages": [
         {
             "name": "brick/math",
@@ -1049,6 +1049,60 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "hepplerdotnet/flash-toastr",
+            "version": "5.6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HepplerDotNet/flash-toastr.git",
+                "reference": "f9e709af02057fdc3ff5913feeaf67f0112871e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HepplerDotNet/flash-toastr/zipball/f9e709af02057fdc3ff5913feeaf67f0112871e4",
+                "reference": "f9e709af02057fdc3ff5913feeaf67f0112871e4",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=5.4.0",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "HepplerDotNet\\FlashToastr\\FlashServiceProvider"
+                    ],
+                    "aliases": {
+                        "Flash": "HepplerDotNet\\FlashToastr\\Flash"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Functions.php"
+                ],
+                "psr-4": {
+                    "HepplerDotNet\\FlashToastr\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Patrick Heppler",
+                    "email": "patrick@heppler.net"
+                }
+            ],
+            "description": "Easy toastr.js flash notifications",
+            "support": {
+                "issues": "https://github.com/HepplerDotNet/flash-toastr/issues",
+                "source": "https://github.com/HepplerDotNet/flash-toastr/tree/master"
+            },
+            "time": "2018-10-23T07:17:28+00:00"
         },
         {
             "name": "laravel/framework",

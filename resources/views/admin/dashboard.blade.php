@@ -79,6 +79,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {!! $data['users']->links() !!}
                 </div>
             </div>
         </div>
