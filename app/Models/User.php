@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\UserRole;
+use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, softDeletes;
+    use HasApiTokens, HasFactory, Notifiable, softDeletes;
 
     private static $parent_id;
 
