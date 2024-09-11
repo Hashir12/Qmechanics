@@ -29,6 +29,7 @@ class Post extends Model
             if (!$newPost) {
                 throw new Exception("Failed to create post.");
             }
+
             return ['status' => 'success', 'message' => 'Post created successfully.'];
         } catch(\Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
@@ -50,5 +51,9 @@ class Post extends Model
         } catch(Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }
