@@ -29,7 +29,6 @@ class PostRequest extends FormRequest
 
     public function messages() {
         return [
-            'user_id.exists' => 'The selected user does not exist.',
             'title.required' => 'The Title field is required.',
             'post_content.required' => 'The Content field is required.',
         ];
